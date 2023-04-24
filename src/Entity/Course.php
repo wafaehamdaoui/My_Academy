@@ -40,7 +40,7 @@ class Course
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
-    #[ORM\ManyToOne(inversedBy: 'name')]
+    #[ORM\ManyToOne(inversedBy: 'courses')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
@@ -195,4 +195,5 @@ class Course
 
         return $this;
     }
+
 }

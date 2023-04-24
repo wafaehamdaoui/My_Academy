@@ -54,43 +54,57 @@
       </div>
       {% endfor %}
     </div>
-    <div class="text-center">
-  <a href="{{ path('allCourses') }}" class="inline-block px-6 py-3 mb-5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold">Browse Courses</a>
-</div>
-<div class="container mb-5">
-  <h2 class="text-center mb-5">Course Categories</h2>
-  <div class="row">
-    <div class="col-md-4 mb-5">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Category 1</h5>
-          <p class="card-text">Description of category 1</p>
-          <a href="#" class="btn btn-sm btn-outline-secondary">View Courses</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-5">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Category 2</h5>
-          <p class="card-text">Description of category 2</p>
-          <a href="#" class="btn btn-sm btn-outline-secondary">View Courses</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-5">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Category 3</h5>
-          <p class="card-text">Description of category 3</p>
-          <a href="#" class="btn btn-sm btn-outline-secondary">View Courses</a>
-        </div>
-      </div>
+    <div class="text-center mb-5">
+       <a href="{{ path('allCourses') }}" class="btn btn-outline-success my-2 my-sm-0">Explore More Courses</a>
     </div>
   </div>
-</div>
-
+  </section>
+  <section class="course-categories">
+  <div class="container mb-5">
+     <h2 class="text-center mb-5">Course Categories</h2>
+     <div class="row">
+       {% for category in categories %}
+        <div class="col-md-4 mb-5">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{category.name}}</h5>
+              <p class="card-text">{{category.description}}</p>
+              <a href="{{path('findByCategory',{'id':category.id})}}" class="btn btn-sm btn-outline-secondary">View Courses</a>
+            </div>
+          </div>
+         </div>   
+       {% endfor %}
+     </div>
+   </div>
+  </section>
+<section class="free-courses">
+  <div class="container">
+    <h2 class="text-center mb-5">Free Courses</h2>
+    <div class="row">
+    {% for course in freeCourses %}
+      <div class="col-md-4 mb-5">
+        <div class="card">
+          <img src={{course.url}} class="card-img-top" alt="Course Image">
+          <div class="card-body">
+            <h5 class="card-title">{{course.title}}</h5>
+            <p class="card-text">{{course.description}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="{{ path('courseDetails', {'id': course.id}) }}" class="btn btn-sm btn-outline-secondary">Learn More</a>
+                <a href="{{ path('enroll', {'id': course.id}) }}" class="btn btn-sm btn-outline-secondary">Enroll Now</a>
+              </div>
+              <small class="text-white bg-success p-2 rounded-circle">Free</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mb-5">
+      <a href="{{ path('findFree') }}" class="btn btn-outline-success my-2 my-sm-0">Explore More Courses</a>
+    </div>
   </div>
 </section>
+
 
 {% endblock %}

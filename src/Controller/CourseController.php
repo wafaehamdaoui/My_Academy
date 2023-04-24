@@ -9,6 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CourseRepository;
 use App\Entity\Course;
+use App\Repository\CategoryRepository;
+use App\Entity\Category;
 use App\Form\CourseType;
 
 class CourseController extends AbstractController
@@ -21,14 +23,18 @@ class CourseController extends AbstractController
         $updates = $courseRepository->findAll();
         $courses = $courseRepository->findAll();
         return $this->render('course/index.html.twig',
-        ['courses' => $courses,'updates' => $updates]);
+        ['courses' => $courses,'title' => 'All Courses']);
     }
     // show list of courses
     #[Route('/', name: 'home')]
-    public function home(EntityManagerInterface $entityManager, CourseRepository $courseRepository): Response
+    public function home(EntityManagerInterface $entityManager, CourseRepository $courseRepository, CategoryRepository $categoryRepository): Response
     {
+        $freeCourses = $courseRepository->findBy(['price' => 0]);
         $courses = $courseRepository->findBy([], ['id' => 'DESC'], 3);
-        return $this->render('course/home.html.twig', ['courses' => $courses]);
+        $categories = $categoryRepository->findBy([], ['id' => 'DESC'], 3);
+        return $this->render('course/home.html.twig', ['courses' => $courses,
+         'categories'=>$categories, 'freeCourses'=>$freeCourses,
+        ]);
     }
 
     //add a new course
@@ -92,13 +98,31 @@ class CourseController extends AbstractController
         }
         return $this->redirectToRoute('allCourse');
     }
-     // find posts added by an author
+     // find courses added by an author
      #[Route('/course/{level}', name: 'course_by_level')]
      public function searchByLevel(CourseRepository $courseRepository, $level): Response
      {
          $courses = $courseRepository->findByLevel($level);
          return $this->render('course/index.html.twig',['courses' => $courses]);
      }
+      // find course added by category
+      #[Route('/course/category/{id}', name: 'findByCategory')]
+      public function searchByCategory(CategoryRepository $categoryRepository,CourseRepository $courseRepository, $id): Response
+      {
+          $category = $categoryRepository->find($id);
+          $courses = $category->getCourses();
+          return $this->render('course/index.html.twig',['courses' => $courses,
+          'title' => $category->getName().' Courses',
+        ]);
+      }
+      // find free courses 
+      #[Route('/course/free', name: 'findFree')]
+      public function findFree(CourseRepository $courseRepository, $id): Response
+      {
+          $freeCourses = $courseRepository->findBy(['price' => 0]);
+          return $this->render('course/index.html.twig',['title' => 'Free Courses','courses' => $freeCourses,
+        ]);
+      }
      //enroll in a course
     #[Route('/course/enroll/{id}', name: 'enroll')]
     public function enroll($id, CourseRepository $courseRepository): Response
