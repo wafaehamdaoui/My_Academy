@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>{{ course.title }}</h1>
+      <p>{{ course.description }}</p>
+      <p>Duration: {{ course.duration }} minutes</p>
+      <p>Level: {{ course.level }}</p>
+      <p>Price: {{ course.price }} USD</p>
+
+      <h2>Lessons</h2>
+      {% if course.lessons is not empty %}
+      <ul>
+        {% for lesson in course.lessons %}
+        <li>{{ lesson.title }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No lessons yet</p>
+      {% endif %}
+
+      <h2>Users enrolled</h2>
+      {% if course.users is not empty %}
+      <ul>
+        {% for user in course.users %}
+        <li>{{ user.name }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No users enrolled yet</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

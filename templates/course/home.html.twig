@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome to My Platform{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/path/to/custom.css">
+{% endblock %}
+
+{% block body %}
+   
+    <section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+           <div class="col-md-6">
+           <h1>Transform Your Future</h1>
+           <p class="lead">Unlock your potential with our online courses. Gain new skills and knowledge to advance your career or pursue your passions.</p>
+           <a href="#" class="btn btn-primary btn-lg">Start Learning</a>
+        </div>
+        <div class="col-md-6">
+        <img src="https://www.dacast.com/wp-content/uploads/2021/04/online-live-class-platform.jpg" alt="Hero Image" class="img-fluid">
+        </div>
+    </div>
+    </section>
+
+  <section class="featured-courses">
+  <div class="container">
+    <h2 class="text-center mb-5">Featured Courses</h2>
+    <div class="row">
+    {% for course in courses %}
+      <div class="col-md-4 mb-5">
+        <div class="card">
+          <img src={{course.url}} class="card-img-top" alt="Course Image">
+          <div class="card-body">
+            <h5 class="card-title">{{course.title}}</h5>
+            <p class="card-text">{{course.description}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="{{ path('courseDetails', {'id': course.id}) }}" class="btn btn-sm btn-outline-secondary">Learn More</a>
+                <a href="{{ path('enroll', {'id': course.id}) }}" class="btn btn-sm btn-outline-secondary">Enroll Now</a>
+              </div>
+              <small class="text-muted">${{course.price}}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center">
+      <a href="{{ path('allCourses') }}" class="btn btn-primary btn-lg">View All Courses</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <img src="{{ course.url }}" alt="{{ course.title }}" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ course.title }}</h5>
+          <p class="card-text">{{ course.description }}</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Duration: {{ course.duration }} minutes</li>
+            <li class="list-group-item">Level: {{ course.level }}</li>
+            <li class="list-group-item">Price: {{ course.price }} USD</li>
+          </ul>
+          <a href="" class="btn btn-primary mt-3">Enroll now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
