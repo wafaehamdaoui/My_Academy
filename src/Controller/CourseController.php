@@ -24,7 +24,7 @@ class CourseController extends AbstractController
         ['courses' => $courses,'updates' => $updates]);
     }
     // show list of courses
-    #[Route('/home', name: 'home')]
+    #[Route('/', name: 'home')]
     public function home(EntityManagerInterface $entityManager, CourseRepository $courseRepository): Response
     {
         $courses = $courseRepository->findBy([], ['id' => 'DESC'], 3);

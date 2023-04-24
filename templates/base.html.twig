@@ -14,12 +14,10 @@
 <body>
      <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">My Platform</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <img src=https://aliacademy.online/wp-content/uploads/2021/09/AliAcademy-logo-final-1.png" alt="logo" width="70" height="40">
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
+                   {% block current %}
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ path('home')}}">Home <span class="sr-only">(current)</span></a>
                     </li>
@@ -32,6 +30,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Contact</a>
                     </li>
+                    {% endblock %}
                 </ul>
             </div>
         </nav>
@@ -39,9 +38,44 @@
     <main>
         {% block body %}{% endblock %}
     </main>
-    <footer>
-        <!-- Include your footer content here -->
-    </footer>
+    <footer class="bg-gray-900 text-gray-400">
+  <div class="container mx-auto py-8 px-4 flex flex-wrap">
+    <div class="w-full md:w-1/4 text-center md:text-left">
+      <h5 class="uppercase mb-6 font-bold">About My Platform</h5>
+      <p class="mb-4">My Platform is a learning management system designed to provide a comprehensive online learning experience for students.</p>
+    </div>
+    <div class="w-full md:w-1/4 text-center md:text-left">
+      <h5 class="uppercase mb-6 font-bold">Quick Links</h5>
+      <ul class="list-reset mb-4">
+        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="#" class="hover:underline">Courses</a></li>
+        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="#" class="hover:underline">About</a></li>
+        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="#" class="hover:underline">Contact</a></li>
+      </ul>
+    </div>
+    <div class="w-full md:w-1/4 text-center md:text-left">
+      <h5 class="uppercase mb-6 font-bold">Social Media</h5>
+      <ul class="list-reset mb-4">
+        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="#" class="hover:underline">Facebook</a></li>
+        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="#" class="hover:underline">Twitter</a></li>
+        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="#" class="hover:underline">Instagram</a></li>
+      </ul>
+    </div>
+    <div class="w-full md:w-1/4 text-center md:text-left">
+      <h5 class="uppercase mb-6 font-bold">Subscribe</h5>
+      <p class="mb-4">Get the latest news and updates from My Platform straight to your inbox.</p>
+      <form>
+        <div class="flex items-center">
+          <input type="email" class="w-full py-2 px-3 mr-2 bg-gray-800 text-gray-300 focus:outline-none focus:bg-gray-700" placeholder="johndoe@example.com">
+          <button class="bg-white text-gray-900 py-2 px-4 font-bold uppercase hover:bg-gray-100 focus:outline-none">Subscribe</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="container mx-auto text-center mt-4">
+    <p>&copy; 2023 My Platform. All rights reserved.</p>
+  </div>
+</footer>
+
     {% block javascripts %}
         <!-- Include your JS scripts here -->
     {% endblock %}
