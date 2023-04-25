@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +11,7 @@ use App\Entity\Course;
 use App\Repository\CategoryRepository;
 use App\Entity\Category;
 use App\Form\CourseType;
+use App\Form\CourseSearchType;
 
 class CourseController extends AbstractController
 {
@@ -27,15 +27,37 @@ class CourseController extends AbstractController
     }
     // show list of courses
     #[Route('/', name: 'home')]
-    public function home(EntityManagerInterface $entityManager, CourseRepository $courseRepository, CategoryRepository $categoryRepository): Response
+    public function home(Request $request, EntityManagerInterface $entityManager, CourseRepository $courseRepository, CategoryRepository $categoryRepository): Response
     {
-        $freeCourses = $courseRepository->findBy(['price' => 0]);
+        $freeCourses = $courseRepository->findBy(['price' => 0], ['id' => 'DESC'], 3);
         $courses = $courseRepository->findBy([], ['id' => 'DESC'], 3);
-        $categories = $categoryRepository->findBy([], ['id' => 'DESC'], 3);
+        $categories = $categoryRepository->findAll();
+        $form = $this->createForm(CourseSearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $query = $form->get('query')->getData();
+            
+            $courses = $courseRepository->findByTitle(['title' => $query]);
+
+            return $this->render('course/index.html.twig', [
+                'courses' => $courses, 'title'=>'Search Result'
+            ]);
+        }
         return $this->render('course/home.html.twig', ['courses' => $courses,
          'categories'=>$categories, 'freeCourses'=>$freeCourses,
+         'form' => $form->createView(),
         ]);
     }
+     // show list of courses
+     #[Route('/freeCourses', name: 'freeCourses')]
+     public function freeCourses(EntityManagerInterface $entityManager, CourseRepository $courseRepository): Response
+     {
+         $freeCourses = $courseRepository->findBy(['price' => 0]);
+         return $this->render('course/index.html.twig', ['courses' => $freeCourses,
+          'title'=>'Free Courses',
+         ]);
+     }
 
     //add a new course
     #[Route('/course/add', name: 'NewCourse')]
@@ -98,12 +120,20 @@ class CourseController extends AbstractController
         }
         return $this->redirectToRoute('allCourse');
     }
-     // find courses added by an author
+     // find courses  by level
      #[Route('/course/{level}', name: 'course_by_level')]
      public function searchByLevel(CourseRepository $courseRepository, $level): Response
      {
          $courses = $courseRepository->findByLevel($level);
          return $this->render('course/index.html.twig',['courses' => $courses]);
+     }
+     // find courses  by level
+     #[Route('/course/{title}', name: 'course_by_Title')]
+     public function searchByTitle(CourseRepository $courseRepository, $title): Response
+     {
+
+         $courses = $courseRepository->findByTitle($title);
+         return $this->render('course/index.html.twig',['courses' => $courses, 'title'=>'Search Result']);
      }
       // find course added by category
       #[Route('/course/category/{id}', name: 'findByCategory')]
@@ -115,14 +145,6 @@ class CourseController extends AbstractController
           'title' => $category->getName().' Courses',
         ]);
       }
-      // find free courses 
-      #[Route('/course/free', name: 'findFree')]
-      public function findFree(CourseRepository $courseRepository, $id): Response
-      {
-          $freeCourses = $courseRepository->findBy(['price' => 0]);
-          return $this->render('course/index.html.twig',['title' => 'Free Courses','courses' => $freeCourses,
-        ]);
-      }
      //enroll in a course
     #[Route('/course/enroll/{id}', name: 'enroll')]
     public function enroll($id, CourseRepository $courseRepository): Response
@@ -130,5 +152,27 @@ class CourseController extends AbstractController
         $course=$courseRepository->find($id);
         return $this->render('course/enroll.html.twig',
         ['course' => $course]);
+    }
+    #[Route('/course/enroll/{id}', name: 'enroll')]
+    public function search(Request $request)
+    {
+        $form = $this->createForm(CourseSearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $query = $form->get('query')->getData();
+
+            $courses = $this->getDoctrine()
+                ->getRepository(Course::class)
+                ->findByQuery($query);
+
+            return $this->render('course/index.html.twig', [
+                'courses' => $courses, 'title'=>'Search Result'
+            ]);
+        }
+
+        return $this->render('course/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

@@ -14,24 +14,25 @@
         <div class="row align-items-center">
            <div class="d-flex justify-content-center align-items-center vh-52">
             <div class="hero-content text-center">
-             <h1 class="font-bold text-4xl md:text-5xl mb-4 text-info">Learn Anything, Anytime and Anywhere</h1>
-             <p class="text-lg text-black-200 mb-8">Welcome to our online learning platform, where you can find the knowledge and skills you need to advance your career or explore new topics. Our courses are designed and taught by experts in their fields, and you can access them from anywhere, at any time.</p>
+            <h1 class="font-bold text-4xl md:text-5xl mb-4 text-info">Learn Anything, Anytime and Anywhere</h1>
+             <p class="text-lg text-black-200 mb-8">Welcome to our online learning platform, where you can find the knowledge and skills you need to advance your career or explore new topics. Join thousands of learners already enrolled in our courses. Explore our catalog to find the right course for you.</p>
             </div>
         </div>
        <div class="col-md-14">
-          <img src="https://github.com/wafaehamdaoui/UEMF-RESOURCES/blob/master/frontend/public/Capture.PNG?raw=true" alt="Hero Image" class="img-fluid">
+          <img src="https://cdn01.alison-static.net/public/html/site/img/homepage/banner-image.svg" alt="Hero Image" class="img-fluid">
         </div>
-        <div class="d-flex justify-content-center mt-5">
-  <form class="form-inline col-lg-8 mb-5">
-    <input class="form-control col-lg-10 mr-lg-2 py-4 text-center" type="search" placeholder="What do you want to learn today?" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form>
-</div>
+        <div class="d-flex justify-content-center mt-4">
+          {{ form_start(form, {'attr': {'class': 'class="form-inline col-lg-8 mb-5"'}}) }}
+            <div class="input-group">
+              {{ form_widget(form.query, {'attr': {'class': 'form-control col-lg-10 mr-lg-2 py-4 text-center', type:'search', 'placeholder': 'What do you want to learn today?'}}) }}
+              <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+            </div>
+          {{ form_end(form) }}
 
-    </div>
+           </div>
     </section>
   
-  <section class="featured-courses">
+  <section class="featured-courses mt-5">
   <div class="container">
     <h2 class="text-center mb-5">Featured Courses</h2>
     <div class="row">
@@ -101,7 +102,7 @@
       {% endfor %}
     </div>
     <div class="text-center mb-5">
-      <a href="{{ path('findFree') }}" class="btn btn-outline-success my-2 my-sm-0">Explore More Courses</a>
+      <a href="{{ path('freeCourses') }}" class="btn btn-outline-success my-2 my-sm-0">Explore More Free Courses</a>
     </div>
   </div>
 </section>
