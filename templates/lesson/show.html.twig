@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ lesson.title }}{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>{{ lesson.title }}</h1>
+      <p>{{ lesson.content }}</p>
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="{{ lesson.video }}" allowfullscreen></iframe>
+      </div>
+      
+      <h2>Quizzes</h2>
+      {% if lesson.quizzes is not empty %}
+      <ul>
+        {% for quiz in lesson.quizzes %}
+        <li>{{ quiz.question }}</li>
+        {% endfor %}
+        
+      </ul>
+      {% else %}
+      <p>No quizzes yet</p>
+      {% endif %}
+      <div class="btn-group">
+            <a href="{{ path('NewQuiz', {'lessonId': lesson.id}) }}" class="btn btn-sm btn-outline-secondary">Add Quiz</a>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\QuizRepository;
 use App\Entity\Quiz;
 use App\Form\QuizType;
+use App\Repository\LessonRepository;
 
 class QuizController extends AbstractController
 {
@@ -17,19 +18,36 @@ class QuizController extends AbstractController
     public function allQuizs(EntityManagerInterface $entityManager,
      QuizRepository $quizRepository): Response
    {
-       $quizs = $quizRepository->findAll();
+       $quizzes = $quizRepository->findAll();
        return $this->render('quiz/index.html.twig',
-       ['quizs' => $quizs]);
+       ['quizzes' => $quizzes]);
    }
    //add a new quiz
-   #[Route('/quiz/add/{course}', name: 'NewQuiz')]
-   public function AddNewQuiz(Request $request,$course, EntityManagerInterface $entityManager, QuizRepository $quizRepository): Response
+   #[Route('/quiz/add/{lessonId}', name: 'NewQuiz')]
+   public function AddNewQuiz(Request $request,$lessonId, EntityManagerInterface $entityManager,
+    QuizRepository $quizRepository, LessonRepository $lessonRepository): Response
    {
        $quiz = new Quiz();
        $form = $this->createForm(QuizType::class, $quiz);
        $form->handleRequest($request);
        if ($form->isSubmitted() && $form->isValid()) {
-           $question->setCourse($course);
+           $lesson = $lessonRepository->find($lessonId);
+           $quiz->setLesson($lesson);
+           $entityManager->persist($quiz);
+           $entityManager->flush();
+           $this->addFlash('success', 'Quiz added');
+           return $this->redirectToRoute('allQuizs');
+       }
+       return $this->render('quiz/add.html.twig', ['form' => $form->createView(),]);
+   }
+   //add a new quiz
+   #[Route('/quiz/add', name: 'addQuiz')]
+   public function AddQuiz(Request $request, EntityManagerInterface $entityManager, QuizRepository $quizRepository): Response
+   {
+       $quiz = new Quiz();
+       $form = $this->createForm(QuizType::class, $quiz);
+       $form->handleRequest($request);
+       if ($form->isSubmitted() && $form->isValid()) {
            $entityManager->persist($quiz);
            $entityManager->flush();
            $this->addFlash('success', 'Quiz added');

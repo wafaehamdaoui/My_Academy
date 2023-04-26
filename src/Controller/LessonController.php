@@ -9,12 +9,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\LessonRepository;
 use App\Entity\Lesson;
+use App\Repository\CourseRepository;
+use App\Entity\Course;
 use App\Form\LessonType;
 
 class LessonController extends AbstractController
 {
     // show list of lessons
-    #[Route('/course/lessons', name: 'allLessons')]
+    #[Route('/allLessons', name: 'allLessons')]
     public function allCourses(EntityManagerInterface $entityManager,
     LessonRepository $lessonRepository): Response
     {
@@ -23,14 +25,32 @@ class LessonController extends AbstractController
         ['lessons' => $lessons]);
     }
     //add a new course
-    #[Route('/course/add/{course}', name: 'NewLesson')]
-    public function AddNewLesson(Request $request,$course, EntityManagerInterface $entityManager, LessonRepository $lessonRepository): Response
+    #[Route('/lesson/add/{courseId}', name: 'NewLesson')]
+    public function AddNewLesson(Request $request,$courseId, EntityManagerInterface $entityManager,
+     LessonRepository $lessonRepository, CourseRepository $courseRepository): Response
     {
         $lesson = new Lesson();
         $form = $this->createForm(LessonType::class, $lesson);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $course = $courseRepository->find($courseId);
             $lesson->setCourse($course);
+            $entityManager->persist($lesson);
+            $entityManager->flush();
+            $this->addFlash('success', 'The lesson is added by success');
+            return $this->redirectToRoute('courseDetails',['id'=>$courseId]);
+        }
+        return $this->render('lesson/add.html.twig', ['form' => $form->createView(),]);
+    }
+    //add a new course
+    #[Route('/lesson/add', name: 'addLesson')]
+    public function AddLesson(Request $request, EntityManagerInterface $entityManager,
+     LessonRepository $lessonRepository): Response
+    {
+        $lesson = new Lesson();
+        $form = $this->createForm(LessonType::class, $lesson);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($lesson);
             $entityManager->flush();
             $this->addFlash('success', 'The lesson is added by success');
@@ -39,7 +59,7 @@ class LessonController extends AbstractController
         return $this->render('lesson/add.html.twig', ['form' => $form->createView(),]);
     }
     //show a lesson
-    #[Route('/course/lesson/{id}', name: 'lessonDetails')]
+    #[Route('/lesson/{id}', name: 'lessonDetails')]
     public function more($id, LessonRepository $lessonRepository): Response
     {
         $lesson=$lessonRepository->find($id);

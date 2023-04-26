@@ -1,20 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LessonController!{% endblock %}
+{% block title %}All Lessons{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Admin/Documents/PHP/My_Academy/src/Controller/LessonController.php'|file_link(0) }}">src/Controller/LessonController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Admin/Documents/PHP/My_Academy/templates/lesson/index.html.twig'|file_link(0) }}">templates/lesson/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div class="container">
+        <h1 class="mt-4 mb-4">All Lessons</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Course</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lesson in lessons %}
+                    <tr>
+                        <td>{{ lesson.title }}</td>
+                        <td>{{ lesson.course.title }}</td>
+                        <td>
+                            <a class="btn btn-primary mr-2" href="{{ path('lessonDetails', {'id': lesson.id}) }}">Details</a>
+                            <a class="btn btn-danger" href="{{ path('lesson_delete', {'id': lesson.id}) }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a class="btn btn-success mt-2 mb-3 col-2 " href="{{ path('addLesson') }}">Add New Lesson</a>
+    </div>
 {% endblock %}

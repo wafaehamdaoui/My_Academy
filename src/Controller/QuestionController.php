@@ -24,14 +24,31 @@ class QuestionController extends AbstractController
        ['questions' => $questions]);
    }
    //add a new question
-   #[Route('/quiz/question/add/{quiz}', name: 'NewUser')]
-   public function AddNewLesson(Request $request,$quiz, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+   #[Route('/quiz/question/add/{quizId}', name: 'NewQuestion')]
+   public function AddNewQestion(Request $request,$quizId, EntityManagerInterface $entityManager,
+    QuestionRepository $questionRepository, QuizRepository $quizRepository): Response
    {
        $question = new Question();
        $form = $this->createForm(QuestionType::class, $question);
        $form->handleRequest($request);
        if ($form->isSubmitted() && $form->isValid()) {
+           $quiz = $quizRepository->find($quizId);
            $question->setQuiz($quiz);
+           $entityManager->persist($question);
+           $entityManager->flush();
+           $this->addFlash('success', 'question added');
+           return $this->redirectToRoute('allQuestions');
+       }
+       return $this->render('question/add.html.twig', ['form' => $form->createView(),]);
+   }
+   //add a new question
+   #[Route('/quiz/question/add', name: 'addQuestion')]
+   public function AddQuestion(Request $request, EntityManagerInterface $entityManager, QuestionRepository $questionRepository): Response
+   {
+       $question = new Question();
+       $form = $this->createForm(QuestionType::class, $question);
+       $form->handleRequest($request);
+       if ($form->isSubmitted() && $form->isValid()) {
            $entityManager->persist($question);
            $entityManager->flush();
            $this->addFlash('success', 'question added');

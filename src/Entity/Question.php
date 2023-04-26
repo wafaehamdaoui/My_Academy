@@ -20,12 +20,18 @@ class Question
     #[ORM\Column(length: 255)]
     private ?string $response = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $choices = [];
-
     #[ORM\ManyToOne(inversedBy: 'questions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Quiz $quiz = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $choice1 = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $choice3 = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $choice2 = null;
 
     public function getId(): ?int
     {
@@ -56,18 +62,6 @@ class Question
         return $this;
     }
 
-    public function getChoices(): array
-    {
-        return $this->choices;
-    }
-
-    public function setChoices(array $choices): self
-    {
-        $this->choices = $choices;
-
-        return $this;
-    }
-
     public function getQuiz(): ?Quiz
     {
         return $this->quiz;
@@ -76,6 +70,42 @@ class Question
     public function setQuiz(?Quiz $quiz): self
     {
         $this->quiz = $quiz;
+
+        return $this;
+    }
+
+    public function getChoice1(): ?string
+    {
+        return $this->choice1;
+    }
+
+    public function setChoice1(string $choice1): self
+    {
+        $this->choice1 = $choice1;
+
+        return $this;
+    }
+
+    public function getChoice3(): ?string
+    {
+        return $this->choice3;
+    }
+
+    public function setChoice3(string $choice3): self
+    {
+        $this->choice3 = $choice3;
+
+        return $this;
+    }
+
+    public function getChoice2(): ?string
+    {
+        return $this->choice2;
+    }
+
+    public function setChoice2(string $choice2): self
+    {
+        $this->choice2 = $choice2;
 
         return $this;
     }

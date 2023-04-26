@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Add Question</h1>
+
+    {{ form_start(form) }}
+    <div class="form-group mb-3">
+        {{ form_label(form.question, 'Question') }}
+        {{ form_widget(form.question, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group mb-3">
+        {{ form_label(form.response, 'Response') }}
+        {{ form_widget(form.response, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group mb-3">
+        {{ form_label(form.choice1, 'Choice 1') }}
+        {{ form_widget(form.choice1, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group mb-3">
+        {{ form_label(form.choice2, 'Choice 2') }}
+        {{ form_widget(form.choice2, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group mb-3">
+        {{ form_label(form.choice3, 'Choice 3') }}
+        {{ form_widget(form.choice3, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group mb-3">
+        {{ form_label(form.quiz, 'Quiz') }}
+        {{ form_widget(form.quiz, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary mb-3">Create</button>
+    {{ form_end(form) }}
+
+    <a  href="{{ path('allQuestions') }}">Back to list</a>
+{% endblock %}

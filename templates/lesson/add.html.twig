@@ -1,0 +1,38 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header"><h1>New Lesson</h1></div>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                        <div class="mb-3">
+                            {{ form_label(form.title, 'Title') }}
+                            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.content, 'Content') }}
+                            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'rows': 9}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.video, 'Video') }}
+                            {{ form_widget(form.video, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.course, 'Course') }}
+                            {{ form_widget(form.course, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

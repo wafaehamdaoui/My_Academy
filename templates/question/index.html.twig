@@ -1,20 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello QuestionController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>Questions</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Question</th>
+                <th>Response</th>
+                <th>Choices</th>
+                <th>Quiz</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+                <tr>
+                    <td>{{ question.id }}</td>
+                    <td>{{ question.question }}</td>
+                    <td>{{ question.response }}</td>
+                    <td>{{ question.choices|join(', ') }}</td>
+                    <td>{{ question.quiz.title }}</td>
+                    <td>
+                        <a href="{{ path('question_show', {'id': question.id}) }}">Show</a>
+                        <a href="{{ path('question_edit', {'id': question.id}) }}">Edit</a>
+                        {{ form_start(delete_form) }}
+                            <input type="hidden" name="question_id" value="{{ question.id }}">
+                            <button class="btn btn-danger">Delete</button>
+                        {{ form_end(delete_form) }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No questions found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Admin/Documents/PHP/My_Academy/src/Controller/QuestionController.php'|file_link(0) }}">src/Controller/QuestionController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Admin/Documents/PHP/My_Academy/templates/question/index.html.twig'|file_link(0) }}">templates/question/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <a class="btn btn-success mt-2 mb-3 col-2 " href="{{ path('addQuestion') }}">Add New Question</a>
 {% endblock %}
