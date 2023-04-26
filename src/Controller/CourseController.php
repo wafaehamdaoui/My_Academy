@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CourseRepository;
 use App\Entity\Course;
 use App\Repository\CategoryRepository;
+use App\Repository\UserRepository;
 use App\Entity\Category;
 use App\Form\CourseType;
 use App\Form\CourseSearchType;
@@ -101,7 +102,7 @@ class CourseController extends AbstractController
         ['course' => $course]);
     }
     //show a course
-    #[Route('/course/showAdmin/{id}', name: 'courseDetails')]
+    #[Route('/course/showAdmin/{id}', name: 'courseDetailsAdmin')]
     public function showAdmin($id, CourseRepository $courseRepository): Response
     {
         $course=$courseRepository->find($id);
@@ -153,26 +154,5 @@ class CourseController extends AbstractController
         return $this->render('course/enroll.html.twig',
         ['course' => $course]);
     }
-    #[Route('/course/enroll/{id}', name: 'enroll')]
-    public function search(Request $request)
-    {
-        $form = $this->createForm(CourseSearchType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $query = $form->get('query')->getData();
-
-            $courses = $this->getDoctrine()
-                ->getRepository(Course::class)
-                ->findByQuery($query);
-
-            return $this->render('course/index.html.twig', [
-                'courses' => $courses, 'title'=>'Search Result'
-            ]);
-        }
-
-        return $this->render('course/index.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
+   
 }

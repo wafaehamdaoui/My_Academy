@@ -3,22 +3,27 @@
 {% block title %}{{ course.title }}{% endblock %}
 
 {% block body %}
-<div class="container">
+<div class="container mt-5">
   <div class="row">
+    <div class="col-md-8">
+      <h2>{{ course.title }}</h2>
+      <p>{{ course.description }}</p>
+      <ul>
+        <li>Duration: {{ course.duration }} minutes</li>
+        <li>Level: {{ course.level }}</li>
+        <li>Price: {{ course.price }} USD</li>
+        <a href="" class="btn btn-primary">Enroll now</a>
+      </ul>
+
+      <h3>Lessons:</h3>
+      <ul>
+        {% for lesson in course.lessons %}
+          <li><a href="{{path('lessonDetails',{'id' :lesson.id})}}" class="">{{ lesson.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
     <div class="col-md-4">
-      <div class="card">
-        <img src="{{ course.url }}" alt="{{ course.title }}" class="card-img-top">
-        <div class="card-body">
-          <h5 class="card-title">{{ course.title }}</h5>
-          <p class="card-text">{{ course.description }}</p>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Duration: {{ course.duration }} minutes</li>
-            <li class="list-group-item">Level: {{ course.level }}</li>
-            <li class="list-group-item">Price: {{ course.price }} USD</li>
-          </ul>
-          <a href="" class="btn btn-primary mt-3">Enroll now</a>
-        </div>
-      </div>
+      <img src="{{ course.url }}" alt="{{ course.title }}" class="img-fluid">
     </div>
   </div>
 </div>
