@@ -17,7 +17,7 @@ class LessonType extends AbstractType
     {
         $builder
             ->add('title',TextType::class)
-            ->add('content',TextareaType::class, ['attr' => ['rows' => 5]])
+            ->add('content',TextareaType::class, ['attr' => ['rows' => 8]])
             ->add('video',TextType::class)
             ->add('course',EntityType::class, [
                 'class' => Course::class,

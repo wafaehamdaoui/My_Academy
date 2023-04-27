@@ -34,7 +34,7 @@ class Course
     #[ORM\OneToMany(mappedBy: 'course', targetEntity: Lesson::class)]
     private Collection $lessons;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'courses')]
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'courses',cascade:["persist"])]
     private Collection $users;
 
     #[ORM\Column(length: 255)]

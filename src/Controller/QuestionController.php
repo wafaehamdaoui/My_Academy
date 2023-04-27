@@ -20,7 +20,7 @@ class QuestionController extends AbstractController
    QuestionRepository $questionRepository): Response
    {
        $questions = $questionRepository->findAll();
-       return $this->render('question/index.html.twig',
+       return $this->render('admin/questions.html.twig',
        ['questions' => $questions]);
    }
    //add a new question
@@ -64,6 +64,26 @@ class QuestionController extends AbstractController
        return $this->render('question/show.html.twig',
        ['question' => $question]);
    }
+   // edit a Question
+   #[Route("/question/edit/{id}", name:"question_edit")]
+   public function edit(Request $request, Question $question, EntityManagerInterface $entityManager,): Response
+  {
+      $form = $this->createForm(QuestionType::class, $question);
+
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+          $entityManager->persist($question);
+          $entityManager->flush();
+
+          return $this->redirectToRoute('allQuestions');
+      }
+
+      return $this->render('question/edit.html.twig', [
+          'form' => $form->createView(),
+          'question' => $question,
+      ]);
+  }
    // delete a question
    #[Route('/quiz/question/delete/{id}', name: 'question_delete')]
    public function delete($id,EntityManagerInterface $entityManager,

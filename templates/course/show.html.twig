@@ -9,10 +9,10 @@
       <h2>{{ course.title }}</h2>
       <p>{{ course.description }}</p>
       <ul>
-        <li>Duration: {{ course.duration }} minutes</li>
+        <li>Duration: {{ course.duration }} Hours</li>
         <li>Level: {{ course.level }}</li>
         <li>Price: {{ course.price }} USD</li>
-        <a href="" class="btn btn-primary">Enroll now</a>
+        <a href="{{ path('enroll', {'id': course.id}) }}" class="btn btn-primary">Enroll now</a>
       </ul>
 
       <h3>Lessons:</h3>

@@ -1,18 +1,33 @@
+
 {% extends 'base.html.twig' %}
-
-{% block title %}Add Quiz{% endblock %}
-
+{%block header%}
+{%endblock%}
 {% block body %}
-    <div class="container">
-        <h1 class="text-center">Add Quiz</h1>
+    <div class="container mt-12">
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                {{ form_start(form) }}
-                {{ form_row(form.title, {'label': 'Title:', 'attr': {'class': 'form-control mb-3'}}) }}
-                {{ form_row(form.lesson, {'label': 'Lesson:', 'attr': {'class': 'form-control mb-3'}}) }}
-                <button type="submit" class="btn btn-primary mb-3">Add Quiz</button>
-                {{ form_end(form) }}
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header"><h1>New Quiz</h1></div>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                        <div class="mb-3 mt-3">
+                            {{ form_label(form.title, 'Title') }}
+                            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.lesson, 'Lesson') }}
+                            {{ form_widget(form.lesson, {'attr': {'class': 'form-control', 'rows': 7}}) }}
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
+{%block footer%}
+{%endblock%}

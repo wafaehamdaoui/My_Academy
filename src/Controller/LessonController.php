@@ -21,7 +21,7 @@ class LessonController extends AbstractController
     LessonRepository $lessonRepository): Response
     {
         $lessons = $lessonRepository->findAll();
-        return $this->render('lesson/index.html.twig',
+        return $this->render('admin/lessons.html.twig',
         ['lessons' => $lessons]);
     }
     //add a new course
@@ -66,8 +66,28 @@ class LessonController extends AbstractController
         return $this->render('lesson/show.html.twig',
         ['lesson' => $lesson]);
     }
+    // edit a lesson
+    #[Route("/lesson/edit/{id}", name:"lesson_edit")]
+    public function edit(Request $request, Lesson $lesson, EntityManagerInterface $entityManager,): Response
+   {
+       $form = $this->createForm(LessonType::class, $lesson);
+
+       $form->handleRequest($request);
+
+       if ($form->isSubmitted() && $form->isValid()) {
+           $entityManager->persist($lesson);
+           $entityManager->flush();
+
+           return $this->redirectToRoute('allLessons');
+       }
+
+       return $this->render('lesson/edit.html.twig', [
+           'form' => $form->createView(),
+           'lesson' => $lesson,
+       ]);
+   }
     // delete a lesson
-    #[Route('/course/lesson/delete/{id}', name: 'lesson_delete')]
+    #[Route('/lesson/delete/{id}', name: 'lesson_delete')]
     public function delete($id,EntityManagerInterface $entityManager,
     LessonRepository $lessonRepository): Response
     {
@@ -77,10 +97,10 @@ class LessonController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'The lesson is removed by success');
         }
-        return $this->redirectToRoute('allCourse');
+        return $this->redirectToRoute('allLessons');
     }
      // find posts added by an author
-     #[Route('/course/lesson/{course}', name: 'lesson_by_course')]
+     #[Route('/lesson/{course}', name: 'lesson_by_course')]
      public function searchByCourse(LessonRepository $lessonRepository, $course): Response
      {
         $lessons = $lessonRepository->findByCourse($course);

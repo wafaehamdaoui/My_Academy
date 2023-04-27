@@ -1,0 +1,32 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block body %}
+  <div class="container-fluid">
+    <div class="row">
+      <h2>List of Questions</h2>
+       <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Question</th>
+                <th>Quiz</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for question in questions %}
+              <tr>
+                <td>{{question.id}}</td>
+                <td>{{question.question}}</td>
+                <td>{{question.quiz.title}}</td>
+                <td><a href="{{path('question_edit',{'id':question.id})}}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{{path('question_delete',{'id':question.id})}}" class="btn btn-danger btn-sm">Delete</a></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          <a class="btn btn-success mt-2 mb-3 col-3 " href="{{ path('addQuestion') }}">Add New Question</a>
+    </div>
+  </div>
+{%endblock%}

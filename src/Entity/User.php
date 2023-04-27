@@ -30,6 +30,12 @@ class User
     #[ORM\ManyToMany(targetEntity: Course::class, inversedBy: 'users')]
     private Collection $courses;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cardNbr = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $confirmPassword = null;
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
@@ -108,6 +114,30 @@ class User
     public function removeCourse(Course $course): self
     {
         $this->courses->removeElement($course);
+
+        return $this;
+    }
+
+    public function getCardNbr(): ?string
+    {
+        return $this->cardNbr;
+    }
+
+    public function setCardNbr(?string $cardNbr): self
+    {
+        $this->cardNbr = $cardNbr;
+
+        return $this;
+    }
+
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirmPassword;
+    }
+
+    public function setConfirmPassword(?string $confirmPassword): self
+    {
+        $this->confirmPassword = $confirmPassword;
 
         return $this;
     }

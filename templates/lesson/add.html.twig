@@ -1,6 +1,7 @@
 
 {% extends 'base.html.twig' %}
-
+{%block header%}
+{%endblock%}
 {% block body %}
     <div class="container">
         <div class="row justify-content-center">
@@ -15,7 +16,7 @@
                         </div>
                         <div class="mb-3">
                             {{ form_label(form.content, 'Content') }}
-                            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'rows': 9}}) }}
+                            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'rows': 7}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(form.video, 'Video') }}
@@ -36,3 +37,5 @@
         </div>
     </div>
 {% endblock %}
+{%block footer%}
+{%endblock%}

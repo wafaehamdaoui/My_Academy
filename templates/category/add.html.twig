@@ -2,12 +2,12 @@
 {%block header%}
 {%endblock%}
 {% block body %}
-    <div class="container mt-5">
+    <div class="container mt-12">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="text-center">Add a new user</h1>
+                        <h1 class="text-center">Add a new Category</h1>
                     </div>
                     <div class="card-body">
                         {{ form_start(form) }}
@@ -17,22 +17,12 @@
                         </div>
 
                         <div class="form-group mt-3">
-                            {{ form_label(form.email) }}
-                            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-                        </div>
-
-                        <div class="form-group mt-3">
-                            {{ form_label(form.password) }}
-                            {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
-                        </div>
-
-                        <div class="form-group mt-3">
-                            {{ form_label(form.role) }}
-                            {{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_label(form.description) }}
+                            {{ form_widget(form.description, {'attr': {'class': 'form-control','rows': 8}}) }}
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary mt-4">Save</button>
+                            <button type="submit" class="btn btn-primary mt-4">Add</button>
                         </div>
 
                         {{ form_end(form) }}

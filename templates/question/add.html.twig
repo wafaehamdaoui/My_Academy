@@ -1,41 +1,48 @@
 {% extends 'base.html.twig' %}
-
+{%block header%}
+{%endblock%}
 {% block body %}
-    <h1 class="text-center">Add Question</h1>
-
-    {{ form_start(form) }}
-    <div class="form-group mb-3">
-        {{ form_label(form.question, 'Question') }}
-        {{ form_widget(form.question, {'attr': {'class': 'form-control'}}) }}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header"><h1>New Lesson</h1></div>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                        <div class="mb-3">
+                            {{ form_label(form.question, 'Question') }}
+                            {{ form_widget(form.question, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.choice1, 'Choice 1') }}
+                            {{ form_widget(form.choice1, {'attr': {'class': 'form-control', 'rows': 7}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.choice2, 'Choice 2') }}
+                            {{ form_widget(form.choice2, {'attr': {'class': 'form-control', 'rows': 7}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.choice3, 'Choice 3') }}
+                            {{ form_widget(form.choice3, {'attr': {'class': 'form-control', 'rows': 7}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.response, 'Response') }}
+                            {{ form_widget(form.response, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.quiz, 'Quiz') }}
+                            {{ form_widget(form.quiz, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group mb-3">
-        {{ form_label(form.response, 'Response') }}
-        {{ form_widget(form.response, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <div class="form-group mb-3">
-        {{ form_label(form.choice1, 'Choice 1') }}
-        {{ form_widget(form.choice1, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <div class="form-group mb-3">
-        {{ form_label(form.choice2, 'Choice 2') }}
-        {{ form_widget(form.choice2, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <div class="form-group mb-3">
-        {{ form_label(form.choice3, 'Choice 3') }}
-        {{ form_widget(form.choice3, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <div class="form-group mb-3">
-        {{ form_label(form.quiz, 'Quiz') }}
-        {{ form_widget(form.quiz, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <button type="submit" class="btn btn-primary mb-3">Create</button>
-    {{ form_end(form) }}
-
-    <a  href="{{ path('allQuestions') }}">Back to list</a>
 {% endblock %}
+{%block footer%}
+{%endblock%}

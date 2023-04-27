@@ -14,12 +14,12 @@ use App\Repository\LessonRepository;
 
 class QuizController extends AbstractController
 {
-    #[Route('/quiz/all', name: 'allQuizs')]
+    #[Route('/quiz/all', name: 'allQuizzes')]
     public function allQuizs(EntityManagerInterface $entityManager,
      QuizRepository $quizRepository): Response
    {
        $quizzes = $quizRepository->findAll();
-       return $this->render('quiz/index.html.twig',
+       return $this->render('admin/quizzes.html.twig',
        ['quizzes' => $quizzes]);
    }
    //add a new quiz
@@ -36,7 +36,7 @@ class QuizController extends AbstractController
            $entityManager->persist($quiz);
            $entityManager->flush();
            $this->addFlash('success', 'Quiz added');
-           return $this->redirectToRoute('allQuizs');
+           return $this->redirectToRoute('allQuizzes');
        }
        return $this->render('quiz/add.html.twig', ['form' => $form->createView(),]);
    }
@@ -51,7 +51,7 @@ class QuizController extends AbstractController
            $entityManager->persist($quiz);
            $entityManager->flush();
            $this->addFlash('success', 'Quiz added');
-           return $this->redirectToRoute('allQuizs');
+           return $this->redirectToRoute('allQuizzes');
        }
        return $this->render('quiz/add.html.twig', ['form' => $form->createView(),]);
    }
@@ -63,6 +63,26 @@ class QuizController extends AbstractController
        return $this->render('quiz/show.html.twig',
        ['quiz' => $quiz]);
    }
+   // edit a quiz
+   #[Route("/quiz/edit/{id}", name:"quiz_edit")]
+   public function edit(Request $request, Quiz $quiz, EntityManagerInterface $entityManager,): Response
+  {
+      $form = $this->createForm(QuizType::class, $quiz);
+
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+          $entityManager->persist($quiz);
+          $entityManager->flush();
+
+          return $this->redirectToRoute('allQuizzes');
+      }
+
+      return $this->render('quiz/edit.html.twig', [
+          'form' => $form->createView(),
+          'quiz' => $quiz,
+      ]);
+  }
    // delete a quiz
    #[Route('/quiz/delete/{id}', name: 'quiz_delete')]
    public function delete($id,EntityManagerInterface $entityManager,
@@ -74,7 +94,7 @@ class QuizController extends AbstractController
            $entityManager->flush();
            $this->addFlash('success', 'Quiz is removed by success');
        }
-       return $this->redirectToRoute('allQuestions');
+       return $this->redirectToRoute('allQuizzes');
    }
     // find posts added by an author
     #[Route('/quiz/{course}', name: 'user_by_course')]

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}AliAcademy Dashboard{% endblock %}</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"></script>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky mt-10">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="{{path('adminDashboard')}}">
+                <span data-feather="home"></span>
+                Dashboard <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{path('allUsers')}}">
+                <span data-feather="users"></span>
+                Users
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{path('allCourses')}}">
+                <span data-feather="book"></span>
+                Courses
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{path('Categories')}}">
+                <span data-feather="list"></span>
+                Categories
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{path('allLessons')}}">
+                <span data-feather="file"></span>
+                Lessons
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{path('allQuizzes')}}">
+                <span data-feather="file-text"></span>
+                Quizzes
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{path('allQuestions')}}">
+                <span data-feather="file-text"></span>
+                Questions
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Dashboard</h1>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <img src=https://aliacademy.online/wp-content/uploads/2021/09/AliAcademy-logo-final-1.png" alt="logo" width="70" height="40">
+          </div>
+        </div>
+         {% block body %}
+            <h2>Recent Courses</h2>
+            <div class="row">
+             {% for course in courses %}
+             <div class="col-md-4 mb-5">
+        <div class="card">
+          <img src={{course.url}} class="card-img-top" alt="Course Image">
+          <div class="card-body">
+            <h5 class="card-title">{{course.title}}</h5>
+            <p class="card-text">{{course.description}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="{{ path('courseDetails', {'id': course.id}) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                <a href="{{ path('course_delete', {'id': course.id}) }}" class="btn btn-sm btn-outline-secondary">Delete</a>
+              </div>
+              <small class="text-muted">${{course.price}}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endblock %}
+    </div>
+  </div>
+</body>
+</html>
+
+

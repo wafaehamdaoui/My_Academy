@@ -11,6 +11,7 @@ use App\Repository\UserRepository;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\LoginType;
+use App\Form\RegisterType;
 
 class UserController extends AbstractController
 {
@@ -20,7 +21,7 @@ class UserController extends AbstractController
     UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
-        return $this->render('user/index.html.twig',
+        return $this->render('admin/users.html.twig',
         ['users' => $users]);
     }
     //add a new user
@@ -72,7 +73,7 @@ class UserController extends AbstractController
      public function courses(UserRepository $userRepository,$id): Response
      {
         $user = $userRepository->find($id);
-        return $this->render('course/index.html.twig',['courses' => $user->getCourses(), 'title'=> $user->getName().' Courses']);
+        return $this->render('user/profile.html.twig',['courses' => $user->getCourses(), 'user'=>$user]);
      }
 
      // edit a user
@@ -95,23 +96,8 @@ class UserController extends AbstractController
             'user' => $user,
         ]);
     }
-    #[Route('/loginAd', name: 'loginAd')]
-    public function loginAd(Request $request, UserRepository $userRepository)
-    {
-        $form = $this->createForm(LoginType::class);
-        $email = $request->request->get('email');
-        $password = $request->request->get('password');
-        $user = $userRepository->findOneBy(['email' => $email]);
-        if (!$user || !$user->isValidPassword($password)) {
-            $this->addFlash('error', 'Invalid email or password');
-            return $this->render('course/login.html.twig', [
-                'form' => $form->createView(),
-            ]);
-        } else {
-            return $this->render('course/index.html.twig');
-        }
-    }
-    //add a new user
+    
+    //login 
     #[Route('/login', name: 'login')]
     public function login(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
@@ -136,5 +122,24 @@ class UserController extends AbstractController
                 }
         }
         return $this->render('user/login.html.twig', ['form' => $form->createView(),]);
+    }
+    //Register => add a new user
+    #[Route('/register', name: 'register')]
+    public function register(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    {
+        $user = new User();
+        $form = $this->createForm(RegisterType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $confirmedPass = $form->get('confirmPassword')->getData();
+            $password = $form->get('password')->getData();
+            if ($password==$confirmedPass) {
+                $user->setRole('Student');
+                $entityManager->persist($user);
+                $entityManager->flush();
+                return $this->redirectToRoute('user_courses', ['id' => $user->getId()]);
+            }
+        }
+        return $this->render('user/register.html.twig', ['form' => $form->createView(),]);
     }
 }

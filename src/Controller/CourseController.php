@@ -8,11 +8,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CourseRepository;
 use App\Entity\Course;
+use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Entity\Category;
 use App\Form\CourseType;
 use App\Form\CourseSearchType;
+use App\Form\EnrollType;
 
 class CourseController extends AbstractController
 {
@@ -21,10 +23,9 @@ class CourseController extends AbstractController
     public function allCourses(EntityManagerInterface $entityManager,
     CourseRepository $courseRepository): Response
     {
-        $updates = $courseRepository->findAll();
         $courses = $courseRepository->findAll();
-        return $this->render('course/index.html.twig',
-        ['courses' => $courses,'title' => 'All Courses']);
+        return $this->render('admin/courses.html.twig',
+        ['courses' => $courses,]);
     }
     // show list of courses
     #[Route('/', name: 'home')]
@@ -101,6 +102,27 @@ class CourseController extends AbstractController
         return $this->render('course/show.html.twig',
         ['course' => $course]);
     }
+
+    // edit a course
+    #[Route("/course/edit/{id}", name:"course_edit")]
+    public function edit(Request $request, Course $course, EntityManagerInterface $entityManager,): Response
+   {
+       $form = $this->createForm(CourseType::class, $course);
+
+       $form->handleRequest($request);
+
+       if ($form->isSubmitted() && $form->isValid()) {
+           $entityManager->persist($course);
+           $entityManager->flush();
+
+           return $this->redirectToRoute('allCourses');
+       }
+
+       return $this->render('course/edit.html.twig', [
+           'form' => $form->createView(),
+           'course' => $course,
+       ]);
+   }
     //show a course
     #[Route('/course/showAdmin/{id}', name: 'courseDetailsAdmin')]
     public function showAdmin($id, CourseRepository $courseRepository): Response
@@ -119,7 +141,7 @@ class CourseController extends AbstractController
             $entityManager->remove($course);
             $entityManager->flush();
         }
-        return $this->redirectToRoute('allCourse');
+        return $this->redirectToRoute('allCourses');
     }
      // find courses  by level
      #[Route('/course/{level}', name: 'course_by_level')]
@@ -148,11 +170,32 @@ class CourseController extends AbstractController
       }
      //enroll in a course
     #[Route('/course/enroll/{id}', name: 'enroll')]
-    public function enroll($id, CourseRepository $courseRepository): Response
+    public function enroll($id, CourseRepository $courseRepository, UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $course=$courseRepository->find($id);
-        return $this->render('course/enroll.html.twig',
-        ['course' => $course]);
+        $user = new User();
+        $course = $courseRepository->find($id);
+        $form = $this->createForm(EnrollType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $email=$form->get('email')->getData();
+            $user=$userRepository->findOneBy(['email'=>$email,]);
+            if ($user) {
+                $course->addUser($user);
+                $entityManager->persist($course);
+                $entityManager->flush();
+                $this->addFlash('success', 'Enrolled successfully');
+                return $this->redirectToRoute('user_courses', ['id' => $user->getId()]);
+            }
+        }
+        return $this->render('course/enroll.html.twig', ['form' => $form->createView(),'course'=>$course]);
+    }
+    #[Route('/adminDashboard', name: 'adminDashboard')]
+    public function adminDashboard(CourseRepository $courseRepository): Response
+    {
+    $courses = $courseRepository->findBy([], ['id' => 'DESC'], 3);
+    return $this->render('dashboard.html.twig', [
+        'courses' => $courses,
+    ]);
     }
    
 }

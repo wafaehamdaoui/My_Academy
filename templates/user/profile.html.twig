@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Profile | ALI ACADEMY Platform{% endblock %}
+{%block login%}
+<a class="nav-link" href="{{path('user_courses',{'id':user.id})}}">{{user.name}}</a>
+{%endblock%}
+{% block body %}
+<section class="profile mt-3">
+    <div class="container">
+        <h1>My Profile</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Personal Information</h5>
+                        <p class="card-text"><strong>Name:</strong> {{ user.name }}</p>
+                        <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Courses Enrolled In</h5>
+                        {% if courses %}
+                            <ul class="list-group list-group-flush">
+                                {% for course in courses %}
+                                    <li class="list-group-item"><a href="{{ path('courseDetails', {'id': course.id}) }}">{{ course.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p >You haven't enrolled in any courses yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                            <a href="{{ path('allCourses') }}" class="btn btn-outline-success my-2 my-sm-0">Explore More Courses</a>
+                        </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block footer %}
+
+{% endblock %}

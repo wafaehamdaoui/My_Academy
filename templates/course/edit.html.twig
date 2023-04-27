@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{%block header%}
+{%endblock%}
+{% block body %}
+    <h1 class="text-center">Edit Course "{{ course.title }}"</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            {{ form_start(form) }}
+                {{ form_row(form.title, { 'label': 'Title', 'attr': {'class': 'form-control mb-3'} }) }}
+                {{ form_row(form.description, { 'label': 'Description', 'attr': {'class': 'form-control mb-3'} }) }}
+                {{ form_row(form.category, { 'label': 'Category', 'attr': {'class': 'form-control mb-3'} }) }}
+                {{ form_row(form.duration, { 'label': 'Duration', 'attr': {'class': 'form-control mb-3'} }) }}
+                {{ form_row(form.level, { 'label': 'Level', 'attr': {'class': 'form-control mb-3'} }) }}
+                {{ form_row(form.price, { 'label': 'price', 'attr': {'class': 'form-control mb-3'} }) }}
+                {{ form_row(form.url, { 'label': 'Image', 'attr': {'class': 'form-control mb-3'} }) }}
+                {{ form_row(form._token) }}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <a href="{{ path('allCourses') }}">Back to course list</a>
+{% endblock %}
+{%block footer%}
+{%endblock%}
