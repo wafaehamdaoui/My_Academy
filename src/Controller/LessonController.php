@@ -53,7 +53,7 @@ class LessonController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($lesson);
             $entityManager->flush();
-            $this->addFlash('success', 'The lesson is added by success');
+            $this->addFlash('success', 'Lesson is added by success');
             return $this->redirectToRoute('allLessons');
         }
         return $this->render('lesson/add.html.twig', ['form' => $form->createView(),]);
@@ -77,7 +77,7 @@ class LessonController extends AbstractController
        if ($form->isSubmitted() && $form->isValid()) {
            $entityManager->persist($lesson);
            $entityManager->flush();
-
+           $this->addFlash('success', 'Lesson is edited by success');
            return $this->redirectToRoute('allLessons');
        }
 
@@ -95,7 +95,7 @@ class LessonController extends AbstractController
         if($lesson){
             $entityManager->remove($lesson);
             $entityManager->flush();
-            $this->addFlash('success', 'The lesson is removed by success');
+            $this->addFlash('success', 'Lesson is removed by success');
         }
         return $this->redirectToRoute('allLessons');
     }

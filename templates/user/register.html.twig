@@ -1,13 +1,16 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Register | My Platform{% endblock %}
-
+{% block header %}
+{%endblock%}
 {% block body %}
-<section class="register">
-    <div class="container">
-        <h1>Create an Account</h1>
-
-        {{ form_start(form) }}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card mt-5">
+        <div class="card-header">
+          <h1 class="card-title text-center">Register</h1>
+        </div>
+        <div class="card-body">
+          {{ form_start(form) }}
 
         <div class="form-group">
             {{ form_label(form.name) }}
@@ -29,13 +32,21 @@
             {{ form_widget(form.confirmPassword, { 'attr': {'class': 'form-control'} }) }}
         </div>
 
-        <button type="submit" class="btn btn-primary">Register</button>
+        <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary mt-3 ">Register</button>
+        </div>
 
         {{ form_end(form) }}
 
-        <div class="text-center mt-3">
+        <div class="text-center mt-3 text-center">
             <p>Already have an account? <a href="{{ path('login') }}">Login</a></p>
         </div>
+        </div>
+      </div>
     </div>
-</section>
+  </div>
+</div>
 {% endblock %}
+{% block footer %}
+{%endblock%}
+

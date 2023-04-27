@@ -87,7 +87,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
-
+            $this->addFlash('success', 'User is Edited by success');
             return $this->redirectToRoute('allUsers');
         }
 

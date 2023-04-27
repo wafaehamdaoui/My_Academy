@@ -114,7 +114,7 @@ class CourseController extends AbstractController
        if ($form->isSubmitted() && $form->isValid()) {
            $entityManager->persist($course);
            $entityManager->flush();
-
+           $this->addFlash('success', 'Course is edited by success');
            return $this->redirectToRoute('allCourses');
        }
 
@@ -140,6 +140,7 @@ class CourseController extends AbstractController
         if($course){
             $entityManager->remove($course);
             $entityManager->flush();
+            $this->addFlash('success', 'Course is removed by success');
         }
         return $this->redirectToRoute('allCourses');
     }

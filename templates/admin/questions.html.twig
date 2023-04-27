@@ -24,6 +24,11 @@
                 <a href="{{path('question_delete',{'id':question.id})}}" class="btn btn-danger btn-sm">Delete</a></td>
               </tr>
             {% endfor %}
+            {% for message in app.session.flashbag.get('success') %}
+              <div class="alert alert-success">
+                {{ message }}
+              </div>
+            {% endfor %}
             </tbody>
           </table>
           <a class="btn btn-success mt-2 mb-3 col-3 " href="{{ path('addQuestion') }}">Add New Question</a>

@@ -35,7 +35,7 @@ class QuizController extends AbstractController
            $quiz->setLesson($lesson);
            $entityManager->persist($quiz);
            $entityManager->flush();
-           $this->addFlash('success', 'Quiz added');
+           $this->addFlash('success', 'Quiz added by success');
            return $this->redirectToRoute('allQuizzes');
        }
        return $this->render('quiz/add.html.twig', ['form' => $form->createView(),]);
@@ -50,7 +50,7 @@ class QuizController extends AbstractController
        if ($form->isSubmitted() && $form->isValid()) {
            $entityManager->persist($quiz);
            $entityManager->flush();
-           $this->addFlash('success', 'Quiz added');
+           $this->addFlash('success', 'Quiz added by success');
            return $this->redirectToRoute('allQuizzes');
        }
        return $this->render('quiz/add.html.twig', ['form' => $form->createView(),]);
@@ -74,7 +74,7 @@ class QuizController extends AbstractController
       if ($form->isSubmitted() && $form->isValid()) {
           $entityManager->persist($quiz);
           $entityManager->flush();
-
+          $this->addFlash('success', 'Quiz is edited by success');
           return $this->redirectToRoute('allQuizzes');
       }
 

@@ -49,7 +49,7 @@ class CategoryController extends AbstractController
       if ($form->isSubmitted() && $form->isValid()) {
           $entityManager->persist($category);
           $entityManager->flush();
-
+          $this->addFlash('success', 'Category is edited by success');
           return $this->redirectToRoute('Categories');
       }
 

@@ -51,7 +51,7 @@ class QuestionController extends AbstractController
        if ($form->isSubmitted() && $form->isValid()) {
            $entityManager->persist($question);
            $entityManager->flush();
-           $this->addFlash('success', 'question added');
+           $this->addFlash('success', 'Question added by success');
            return $this->redirectToRoute('allQuestions');
        }
        return $this->render('question/add.html.twig', ['form' => $form->createView(),]);
@@ -75,7 +75,7 @@ class QuestionController extends AbstractController
       if ($form->isSubmitted() && $form->isValid()) {
           $entityManager->persist($question);
           $entityManager->flush();
-
+          $this->addFlash('success', 'Question is edited by success');
           return $this->redirectToRoute('allQuestions');
       }
 
