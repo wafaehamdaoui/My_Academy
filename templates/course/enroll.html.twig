@@ -5,6 +5,16 @@
 {%endblock%}
 {% block body %}
 <section class="enroll">
+  {% if form_errors(form) %}
+    <div class="alert alert-danger">
+        <ul>
+        {% for error in form_errors(form) %}
+            <li>{{ error.message }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+  {% endif %}
+
     <div class="container">
         <h1>Enroll in {{ course.title }} Course</h1>
 
@@ -18,11 +28,6 @@
         <div class="form-group">
             {{ form_label(form.email) }}
             {{ form_widget(form.email, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-
-        <div class="form-group">
-            {{ form_label(form.password) }}
-            {{ form_widget(form.password, { 'attr': {'class': 'form-control'} }) }}
         </div>
 
         <div class="form-group">

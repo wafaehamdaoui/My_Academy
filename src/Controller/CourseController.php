@@ -60,7 +60,7 @@ class CourseController extends AbstractController
             $courses = $query->getResult();
 
             return $this->render('course/index.html.twig', [
-                'courses' => $courses, 'title'=>'Search Result'
+                'courses' => $courses, 'title'=>'Search Result','user' => $user,
             ]);
         }
         return $this->render('course/home.html.twig', ['courses' => $courses,
@@ -74,7 +74,7 @@ class CourseController extends AbstractController
      {
          $freeCourses = $courseRepository->findBy(['price' => 0]);
          return $this->render('course/index.html.twig', ['courses' => $freeCourses,
-          'title'=>'Free Courses',
+          'title'=>'Free Courses','user' => $this->getUser(),
          ]);
      }
 
@@ -178,28 +178,7 @@ class CourseController extends AbstractController
           'title' => $category->getName().' Courses',
         ]);
       }
-     //enroll in a course
-    #[Route('/course/enroll/{id}', name: 'enroll')]
-    public function enroll($id, CourseRepository $courseRepository, UserRepository $userRepository,
-     Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $user = new User();
-        $course = $courseRepository->find($id);
-        $form = $this->createForm(EnrollType::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $email=$form->get('email')->getData();
-            $user=$userRepository->findOneBy(['email'=>$email,]);
-            if ($user) {
-                $course->addUser($user);
-                $entityManager->persist($course);
-                $entityManager->flush();
-                $this->addFlash('success', 'Enrolled successfully');
-                return $this->redirectToRoute('user_courses', ['id' => $user->getId()]);
-            }
-        }
-        return $this->render('course/enroll.html.twig', ['form' => $form->createView(),'course'=>$course]);
-    }
+     
     //show recent courses
     #[Route('/adminDashboard', name: 'adminDashboard')]
     public function adminDashboard(CourseRepository $courseRepository): Response
