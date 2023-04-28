@@ -107,7 +107,7 @@ class CourseController extends AbstractController
             $entityManager->persist($course);
             $entityManager->flush();
             $this->addFlash('success', 'the course is added by success');
-            return $this->redirectToRoute('allCourses');
+            return $this->redirectToRoute('allCoursesAdmin');
         }
         return $this->render('course/add.html.twig', ['form' => $form->createView(),]);
     }
@@ -115,9 +115,10 @@ class CourseController extends AbstractController
     #[Route('/course/show/{id}', name: 'courseDetails')]
     public function show($id, CourseRepository $courseRepository): Response
     {
+        $user=$this->getUser();
         $course=$courseRepository->find($id);
         return $this->render('course/show.html.twig',
-        ['course' => $course]);
+        ['course' => $course, 'user' => $user]);
     }
 
     // edit a course
@@ -132,7 +133,7 @@ class CourseController extends AbstractController
            $entityManager->persist($course);
            $entityManager->flush();
            $this->addFlash('success', 'Course is edited by success');
-           return $this->redirectToRoute('allCourses');
+           return $this->redirectToRoute('allCoursesAdmin');
        }
 
        return $this->render('course/edit.html.twig', [
@@ -151,7 +152,7 @@ class CourseController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Course is removed by success');
         }
-        return $this->redirectToRoute('allCourses');
+        return $this->redirectToRoute('allCoursesAdmin');
     }
      // find courses  by level
      #[Route('/course/{level}', name: 'course_by_level')]
@@ -172,10 +173,11 @@ class CourseController extends AbstractController
       #[Route('/course/category/{id}', name: 'findByCategory')]
       public function searchByCategory(CategoryRepository $categoryRepository, $id): Response
       {
+          $user = $this->getUser();
           $category = $categoryRepository->find($id);
           $courses = $category->getCourses();
           return $this->render('course/index.html.twig',['courses' => $courses,
-          'title' => $category->getName().' Courses',
+          'title' => $category->getName().' Courses','user'=>$user,
         ]);
       }
      

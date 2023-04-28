@@ -2,8 +2,16 @@
 
 {% block title %}My Profile | ALI ACADEMY Platform{% endblock %}
 {%block login%}
-<a class="nav-link active" href="{{path('user_courses',{'id':user.id})}}">{{user.name}}</a>
+  <li class="nav-item bg-info rounded ml-2">
+      <a class="nav-link" href="{{path('user_courses',{'id':user.id})}}">{{user.name}}</a>
+  </li>
 {%endblock%}
+{%block logout%}
+  <li class="nav-item bg-info rounded ml-2">
+      <a class="nav-link" href="{{path('app_logout')}}">Logout</a>
+  </li>  
+{%endblock%}
+
 {%block register%}
 {%endblock%}
 {% block body %}

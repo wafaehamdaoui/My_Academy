@@ -1,24 +1,16 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Enroll in {{ course.title }} | ALI_ACADEMY{% endblock %}
-{%block header%}
+{% block header %}
 {%endblock%}
 {% block body %}
-<section class="enroll">
-  {% if form_errors(form) %}
-    <div class="alert alert-danger">
-        <ul>
-        {% for error in form_errors(form) %}
-            <li>{{ error.message }}</li>
-        {% endfor %}
-        </ul>
-    </div>
-  {% endif %}
-
-    <div class="container">
-        <h1>Enroll in {{ course.title }} Course</h1>
-
-        {{ form_start(form) }}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card mt-5">
+        <div class="card-header text-center">
+          <h2>Enroll in Course <p class="text-info">"{{ course.title }}"</p></h2>
+        </div>
+        <div class="card-body">
+          {{ form_start(form) }}
 
         <div class="form-group">
             {{ form_label(form.name) }}
@@ -32,15 +24,23 @@
 
         <div class="form-group">
             {{ form_label(form.cardNbr) }}
-            {{ form_widget(form.cardNbr, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_widget(form.cardNbr, { 'attr': {'class': 'form-control',value:""} }) }}
         </div>
-        <div class="form-group">
+    
+        <div class="d-grid gap-2 mt-3">
+        <button type="submit" class="btn btn-primary">Enroll now</button>
+        </div>
+        {{ form_end(form) }}
+
+        <div class="text-center mt-3 text-center">
             <p>Don't have an account yet? <a href="{{ path('register') }}">Register now</a></p>
         </div>
-        <button type="submit" class="btn btn-primary">Enroll Now</button>
-        {{ form_end(form) }}
+        </div>
+      </div>
     </div>
-</section>
+  </div>
+</div>
 {% endblock %}
 {% block footer %}
-{% endblock %}
+{%endblock%}
+

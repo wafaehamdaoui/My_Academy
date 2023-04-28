@@ -49,7 +49,6 @@ class SecurityController extends AbstractController
                     $course->addUser($user);
                     $entityManager->persist($course);
                     $entityManager->flush();
-                    $this->addFlash('success', 'Enrolled successfully');
                     return $this->redirectToRoute('user_courses', ['id' => $user->getId()]);
                 }
             }

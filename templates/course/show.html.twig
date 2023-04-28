@@ -6,14 +6,25 @@
 {% block body %}
 <div class="container mt-5">
   <div class="row">
+  <h2 class="text-center text-info">{{ course.title }}</h2>
     <div class="col-md-8">
-      <h2>{{ course.title }}</h2>
+      <h4>Description</h4>
       <p>{{ course.description }}</p>
       <ul>
         <li>Duration: {{ course.duration }} Hours</li>
         <li>Level: {{ course.level }}</li>
         <li>Price: {{ course.price }} USD</li>
-        <a href="{{ path('enroll', {'id': course.id}) }}" class="btn btn-primary">Enroll now</a>
+        {% if user%}
+
+        {% if course in user.getCourses() %}
+        <a href="{{ path('user_courses', {'id': user.id}) }}" class="btn btn-primary">Already enrolled in</a>
+        {% else %}
+        <a href="{{ path('app_enroll', {'id': course.id}) }}" class="btn btn-primary">Enroll now</a>
+        {% endif %}
+
+        {%else%}
+        <a href="{{ path('app_enroll', {'id': course.id}) }}" class="btn btn-primary">Enroll now</a>
+        {%endif%}
       </ul>
 
       <h3>Lessons:</h3>
@@ -23,8 +34,13 @@
         {% endfor %}
       </ul>
     </div>
-    <div class="col-md-4">
-      <img src="{{ course.url }}" alt="{{ course.title }}" class="img-fluid">
+
+    <div class="col-md-4 mt-5">
+     <div class="card">
+      <div class="card-body">
+        <img src="{{ course.url }}" alt="{{ course.title }}" class="img-fluid">
+      </div>
+      </div>
     </div>
   </div>
 </div>
