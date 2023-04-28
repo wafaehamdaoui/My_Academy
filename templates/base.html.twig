@@ -17,19 +17,26 @@
             <img src=https://aliacademy.online/wp-content/uploads/2021/09/AliAcademy-logo-final-1.png" alt="logo" width="70" height="40">
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                   {% block current %}
+                  {% block home %}
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ path('home')}}">Home </a>
                     </li>
+                  {% endblock %}
+                  {% block courses %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('allCourses')}}">Courses</a>
                     </li>
+                  {% endblock %}
+                  {% block about %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
+                    {% endblock %}
+                    {% block contact %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Contact</a>
                     </li>
+                    {% endblock %}
                     {% block login %}
                       <li class="nav-item active bg-info rounded">
                         <a class="nav-link" href="">Log in</a>
@@ -41,7 +48,6 @@
                       </li>            
                     {% endblock %}
                     
-                    {% endblock %}
                 </ul>
             </div>
         </nav>

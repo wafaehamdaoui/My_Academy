@@ -5,7 +5,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CourseRepository;
 use App\Entity\Course;
@@ -21,11 +20,11 @@ class CourseController extends AbstractController
 {
     // show list of courses for normal user
     #[Route('/course/all', name: 'allCourses')]
-    public function allCourses(EntityManagerInterface $entityManager,Security $security,
+    public function allCourses(EntityManagerInterface $entityManager,
     CourseRepository $courseRepository): Response
     {
         $courses = $courseRepository->findAll();
-        $user = $security->getUser();
+        $user = $this->getUser();
         return $this->render('course/index.html.twig',
         ['courses' => $courses,'title'=>'All Courses','user'=>$user]);
     }
@@ -40,12 +39,12 @@ class CourseController extends AbstractController
     }
     // home page
     #[Route('/', name: 'home')]
-    public function home(Request $request, Security $security, EntityManagerInterface $entityManager, CourseRepository $courseRepository, CategoryRepository $categoryRepository): Response
+    public function home(Request $request, EntityManagerInterface $entityManager, CourseRepository $courseRepository, CategoryRepository $categoryRepository): Response
     {
         $freeCourses = $courseRepository->findBy(['price' => 0], ['id' => 'DESC'], 3);
         $courses = $courseRepository->findBy([], ['id' => 'DESC'], 3);
         $categories = $categoryRepository->findAll();
-        $user = $security->getUser();
+        $user = $this->getUser();
         $form = $this->createForm(CourseSearchType::class);
         $form->handleRequest($request);
 

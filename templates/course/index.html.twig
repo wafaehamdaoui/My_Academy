@@ -7,15 +7,33 @@
     <link rel="stylesheet" href="/path/to/custom.css">
 {% endblock %}
 
+{% block courses %}
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('allCourses')}}">Courses</a>
+    </li>
+{% endblock %}
+
 {%block login%}
-{% if user in not null %}
-<a class="nav-link bg-info rounded" href="{{path('user_courses',{'id':user.id})}}">{{user.name}}</a>
+{% if user %}
+  <li class="nav-item bg-info rounded">
+      <a class="nav-link" href="{{path('user_courses',{'id':user.id})}}">{{user.name}}</a>
+  </li> 
+{%else%}
+  <li class="nav-item active bg-info rounded">
+    <a class="nav-link" href="{{path('login')}}">Log in</a>
+  </li> 
 {% endif %}
 {%endblock%}
 
 {%block register%}
-{% if user in not null %}
-<a href=""></a>
+{% if user %}
+   <li>
+      <a href=""></a>
+    </li>  
+{%else%}
+  <li class="nav-item active bg-info rounded ml-2">
+   <a class="nav-link" href="{{path('register')}}">Register</a>
+  </li>
 {% endif %}
 {%endblock%}
 
