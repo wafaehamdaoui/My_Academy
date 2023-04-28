@@ -13,17 +13,42 @@
   </li>
 {% endblock %}
 
-{% block login %}
-    <li class="nav-item active bg-info rounded">
-       <a class="nav-link" href="{{ path('login') }}" >Log in</a>
-    </li>            
- {% endblock %}
 
- {% block register %}
-    <li class="nav-item active bg-info rounded ml-2">
-       <a class="nav-link" href="{{ path('register') }}" > Register</a>
-    </li>            
- {% endblock %}
+{%block login%}
+{% if user %}
+  <li class="nav-item bg-info rounded ml-2">
+      <a class="nav-link" href="{{path('user_courses',{'id':user.id})}}">{{user.name}}</a>
+  </li> 
+{%else%}
+  <li class="nav-item active bg-info rounded ml-2">
+    <a class="nav-link" href="{{path('app_login')}}">Log in</a>
+  </li> 
+{% endif %}
+{%endblock%}
+
+{%block logout%}
+{% if user %}
+  <li class="nav-item bg-info rounded ml-2">
+      <a class="nav-link" href="{{path('app_logout')}}">Logout</a>
+  </li> 
+{%else%}
+  <li>
+    <a href=""></a>
+  </li> 
+{% endif %}
+{%endblock%}
+
+{%block register%}
+{% if user %}
+   <li>
+      <a href=""></a>
+    </li>  
+{%else%}
+  <li class="nav-item active bg-info rounded ml-2">
+   <a class="nav-link" href="{{path('app_register')}}">Register</a>
+  </li>
+{% endif %}
+{%endblock%}
 
 {% block body %}
    
