@@ -1,20 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Welcome to My Platform{% endblock %}
+{% block title %}ALI_ACADEMY{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="/path/to/custom.css">
 {% endblock %}
 
-{% block header %}        
-{% endblock %}
+{%block login%}
+{% if user in not null %}
+<a class="nav-link bg-info rounded" href="{{path('user_courses',{'id':user.id})}}">{{user.name}}</a>
+{% endif %}
+{%endblock%}
+
+{%block register%}
+{% if user in not null %}
+<a href=""></a>
+{% endif %}
+{%endblock%}
 
 {% block body %}
   <section class="featured-courses">
   <div class="container">
     <h2 class="text-center mb-5">{{ title }}</h2>
     <div class="row">
+    {% if courses is not empty %}
     {% for course in courses %}
       <div class="col-md-4 mb-5">
         <div class="card">
@@ -32,12 +42,12 @@
           </div>
         </div>
       </div>
-      {% endfor %}
+    {% endfor %}
+    {% else %}
+      <h1 class="text-center">No Course yet</h1>
+      {% endif %}
     </div>
   </div>
 </section>
 
-{% endblock %}
-{% block footer %}
-              
 {% endblock %}

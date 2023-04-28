@@ -15,8 +15,7 @@ class CategoryController extends AbstractController
 {
    // show list of categories
    #[Route('/categories', name: 'Categories')]
-   public function allCourses(EntityManagerInterface $entityManager,
-   CategoryRepository $categoryRepository): Response
+   public function allCourses(CategoryRepository $categoryRepository): Response
    {
        $categories = $categoryRepository->findAll();
        return $this->render('admin/categories.html.twig',
@@ -24,8 +23,7 @@ class CategoryController extends AbstractController
    }
    //add a new categories
    #[Route('/category/add', name: 'addCategory')]
-   public function AddNewLesson(Request $request, EntityManagerInterface $entityManager,
-    CategoryRepository $CategoryRepository): Response
+   public function AddNewLesson(Request $request, EntityManagerInterface $entityManager): Response
    {
        $category = new Category();
        $form = $this->createForm(CategoryType::class, $category);

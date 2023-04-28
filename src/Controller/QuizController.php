@@ -14,6 +14,7 @@ use App\Repository\LessonRepository;
 
 class QuizController extends AbstractController
 {
+    // get list of quizzes
     #[Route('/quiz/all', name: 'allQuizzes')]
     public function allQuizs(EntityManagerInterface $entityManager,
      QuizRepository $quizRepository): Response
@@ -22,7 +23,24 @@ class QuizController extends AbstractController
        return $this->render('admin/quizzes.html.twig',
        ['quizzes' => $quizzes]);
    }
-   //add a new quiz
+
+   //add a new quiz from quiz list page
+   #[Route('/quiz/add', name: 'addQuiz')]
+   public function AddQuiz(Request $request, EntityManagerInterface $entityManager, QuizRepository $quizRepository): Response
+   {
+       $quiz = new Quiz();
+       $form = $this->createForm(QuizType::class, $quiz);
+       $form->handleRequest($request);
+       if ($form->isSubmitted() && $form->isValid()) {
+           $entityManager->persist($quiz);
+           $entityManager->flush();
+           $this->addFlash('success', 'Quiz added by success');
+           return $this->redirectToRoute('allQuizzes');
+       }
+       return $this->render('quiz/add.html.twig', ['form' => $form->createView(),]);
+   }
+
+   //add a new quiz from lesson page
    #[Route('/quiz/add/{lessonId}', name: 'NewQuiz')]
    public function AddNewQuiz(Request $request,$lessonId, EntityManagerInterface $entityManager,
     QuizRepository $quizRepository, LessonRepository $lessonRepository): Response
@@ -40,21 +58,7 @@ class QuizController extends AbstractController
        }
        return $this->render('quiz/add.html.twig', ['form' => $form->createView(),]);
    }
-   //add a new quiz
-   #[Route('/quiz/add', name: 'addQuiz')]
-   public function AddQuiz(Request $request, EntityManagerInterface $entityManager, QuizRepository $quizRepository): Response
-   {
-       $quiz = new Quiz();
-       $form = $this->createForm(QuizType::class, $quiz);
-       $form->handleRequest($request);
-       if ($form->isSubmitted() && $form->isValid()) {
-           $entityManager->persist($quiz);
-           $entityManager->flush();
-           $this->addFlash('success', 'Quiz added by success');
-           return $this->redirectToRoute('allQuizzes');
-       }
-       return $this->render('quiz/add.html.twig', ['form' => $form->createView(),]);
-   }
+   
    //show a quiz
    #[Route('/quiz/{id}', name: 'showQuiz')]
    public function show($id, QuizRepository $quizRepository): Response
@@ -96,11 +100,11 @@ class QuizController extends AbstractController
        }
        return $this->redirectToRoute('allQuizzes');
    }
-    // find posts added by an author
-    #[Route('/quiz/{course}', name: 'user_by_course')]
+    // find quiz by an lesson
+    #[Route('/quiz/{lesson}', name: 'quiz_by_lesson')]
     public function searchByRole(QuestionRepository $questionRepository, $quiz): Response
     {
-       $quizs = $questionRepository->findByCourse($course);
+       $quizs = $questionRepository->findByLesson($course);
        return $this->render('quiz/index.html.twig',['quizs' => $quizs]);
     }
 }

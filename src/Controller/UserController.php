@@ -17,8 +17,7 @@ class UserController extends AbstractController
 {
     //show list of users
     #[Route('/users', name: 'allUsers')]
-    public function allUsers(EntityManagerInterface $entityManager,
-    UserRepository $userRepository): Response
+    public function allUsers(UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
         return $this->render('admin/users.html.twig',
@@ -26,7 +25,7 @@ class UserController extends AbstractController
     }
     //add a new user
     #[Route('/user/add', name: 'NewUser')]
-    public function AddNewLesson(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function AddNewLesson(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -61,10 +60,10 @@ class UserController extends AbstractController
         return $this->redirectToRoute('allUsers');
     }
      // find user by role
-     #[Route("/user/find/{id}", name:"user_find")]
+     #[Route("/user/find/{role}", name:"user_by_role")]
      public function searchByRole(UserRepository $userRepository, $role): Response
      {
-        $users = $userRepository->findByRole($course);
+        $users = $userRepository->findByRole($role);
         return $this->render('user/index.html.twig',['users' => $users]);
      }
 
@@ -99,7 +98,7 @@ class UserController extends AbstractController
     
     //login 
     #[Route('/login', name: 'login')]
-    public function login(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function login(Request $request, UserRepository $userRepository): Response
     {
         $user = new User();
         $form = $this->createForm(LoginType::class, $user);
@@ -125,7 +124,7 @@ class UserController extends AbstractController
     }
     //Register => add a new user
     #[Route('/register', name: 'register')]
-    public function register(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function register(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);

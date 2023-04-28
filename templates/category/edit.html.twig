@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
-
+{%block header%}
+{%endblock%}
 {% block body %}
     <h1 class="text-center">Edit Category "{{ category.name }}"</h1>
 
@@ -18,3 +19,5 @@
 
     <a href="{{ path('Categories') }}">Back to Category list</a>
 {% endblock %}
+{%block footer%}
+{%endblock%}

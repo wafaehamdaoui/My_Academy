@@ -17,17 +17,31 @@ class LessonController extends AbstractController
 {
     // show list of lessons
     #[Route('/allLessons', name: 'allLessons')]
-    public function allCourses(EntityManagerInterface $entityManager,
-    LessonRepository $lessonRepository): Response
+    public function allCourses(LessonRepository $lessonRepository): Response
     {
         $lessons = $lessonRepository->findAll();
         return $this->render('admin/lessons.html.twig',
         ['lessons' => $lessons]);
     }
-    //add a new course
+     //add a new course from all lessons page
+     #[Route('/lesson/add', name: 'addLesson')]
+     public function AddLesson(Request $request, EntityManagerInterface $entityManager): Response
+     {
+         $lesson = new Lesson();
+         $form = $this->createForm(LessonType::class, $lesson);
+         $form->handleRequest($request);
+         if ($form->isSubmitted() && $form->isValid()) {
+             $entityManager->persist($lesson);
+             $entityManager->flush();
+             $this->addFlash('success', 'Lesson is added by success');
+             return $this->redirectToRoute('allLessons');
+         }
+         return $this->render('lesson/add.html.twig', ['form' => $form->createView(),]);
+     }
+    //add a new Lesson from courses list page
     #[Route('/lesson/add/{courseId}', name: 'NewLesson')]
     public function AddNewLesson(Request $request,$courseId, EntityManagerInterface $entityManager,
-     LessonRepository $lessonRepository, CourseRepository $courseRepository): Response
+     CourseRepository $courseRepository): Response
     {
         $lesson = new Lesson();
         $form = $this->createForm(LessonType::class, $lesson);
@@ -39,22 +53,6 @@ class LessonController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'The lesson is added by success');
             return $this->redirectToRoute('courseDetails',['id'=>$courseId]);
-        }
-        return $this->render('lesson/add.html.twig', ['form' => $form->createView(),]);
-    }
-    //add a new course
-    #[Route('/lesson/add', name: 'addLesson')]
-    public function AddLesson(Request $request, EntityManagerInterface $entityManager,
-     LessonRepository $lessonRepository): Response
-    {
-        $lesson = new Lesson();
-        $form = $this->createForm(LessonType::class, $lesson);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($lesson);
-            $entityManager->flush();
-            $this->addFlash('success', 'Lesson is added by success');
-            return $this->redirectToRoute('allLessons');
         }
         return $this->render('lesson/add.html.twig', ['form' => $form->createView(),]);
     }
@@ -99,7 +97,7 @@ class LessonController extends AbstractController
         }
         return $this->redirectToRoute('allLessons');
     }
-     // find posts added by an author
+     // find lesson by course
      #[Route('/lesson/{course}', name: 'lesson_by_course')]
      public function searchByCourse(LessonRepository $lessonRepository, $course): Response
      {

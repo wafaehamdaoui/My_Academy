@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
-
+{%block header%}
+{%endblock%}
 {% block body %}
     <h1 class="text-center">Edit User "{{ user.name }}"</h1>
 
@@ -20,3 +21,5 @@
 
     <a href="{{ path('allUsers') }}">Back to user list</a>
 {% endblock %}
+{%block footer%}
+{%endblock%}
