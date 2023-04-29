@@ -17,16 +17,17 @@
       {% if lesson.quizzes is not empty %}
       <ul>
         {% for quiz in lesson.quizzes %}
-        <li>{{ quiz.question }}</li>
+        <li>{{ quiz.title }}</li>
+        <div class="btn-group">
+            <a href="{{ path('showQuiz', {'id': quiz.id}) }}" class="btn btn-sm btn-outline-secondary">Take Quiz</a>
+        </div>
         {% endfor %}
         
       </ul>
       {% else %}
       <p>No quizzes yet</p>
       {% endif %}
-      <div class="btn-group">
-            <a href="{{ path('NewQuiz', {'lessonId': lesson.id}) }}" class="btn btn-sm btn-outline-secondary">Add Quiz</a>
-        </div>
+      
     </div>
   </div>
 </div>
