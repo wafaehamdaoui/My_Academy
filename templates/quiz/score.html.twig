@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiz Result | ALI_ACADEMY{% endblock %}
+{% block header %}
+{% endblock %}
+{% block body %}
+<section class="quiz-result">
+    <div class="container">
+        <h1 class="text-center ">Quiz Result</h1>
+        <h2 class="text-center text-info">You scored {{ score }} out of {{ quiz.questions|length }} questions</h2>
+        <ul>
+            {% for question in quiz.questions %}
+                <li>
+                    <h6 >- {{ question.question }}</h6>
+                    <ul>
+                        <li>Your answer: {{ answers[question.id] }}</li>
+                        {% if answers[question.id] == question.response %}
+                            <li class="text-success">Correct Answer: {{ question.response }}</li>
+                        {% else %}
+                            <li class="text-danger">Correct Answer: {{ question.response }}</li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="btn-group">
+            <a href="{{ path('take_quiz', {'id': quiz.id}) }}" class="btn btn-sm btn-outline-secondary">Retake Quiz</a>
+        </div>
+        <div class="btn-group">
+            <a href="{{ path('lessonDetails', {'id': quiz.lesson.id}) }}" class="btn btn-sm btn-outline-secondary">Go back to lesson</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block footer %}
+{% endblock %}

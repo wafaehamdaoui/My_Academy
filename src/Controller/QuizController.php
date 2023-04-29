@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\QuizRepository;
+use App\Repository\QuestionRepository;
 use App\Entity\Quiz;
 use App\Form\QuizType;
 use App\Repository\LessonRepository;
@@ -60,7 +61,7 @@ class QuizController extends AbstractController
    }
    
    //show a quiz
-   #[Route('/quiz/{id}', name: 'showQuiz')]
+   #[Route('/quizz/{id}', name: 'showQuiz')]
    public function show($id, QuizRepository $quizRepository): Response
    {
        $quiz=$quizRepository->find($id);
@@ -101,11 +102,40 @@ class QuizController extends AbstractController
        return $this->redirectToRoute('allQuizzes');
    }
     // find quiz by an lesson
-    #[Route('/quiz/{lesson}', name: 'quiz_by_lesson')]
+    #[Route('/quiz/lesson/{lesson}', name: 'quiz_by_lesson')]
     public function searchByRole(QuestionRepository $questionRepository, $quiz): Response
     {
        $quizs = $questionRepository->findByLesson($course);
        return $this->render('quiz/index.html.twig',['quizs' => $quizs]);
+    }
+
+    //take quiz
+    #[Route('/takeQuiz/{id}', name: 'take_quiz')]
+    public function takeQuiz(Request $request, $id, QuizRepository $quizRepository): Response
+    {   $quiz = $quizRepository->find($id);
+        if ($request->isMethod('POST')) {
+            // process quiz submission
+            $submittedAnswers = $request->request->all();
+            $score = 0;
+            foreach ($quiz->getQuestions() as $question) {
+                $correctAnswer = $question->getResponse();
+                $submittedAnswer = $submittedAnswers[$question->getId()];
+                if ($correctAnswer == $submittedAnswer) {
+                    $score++;
+                }
+            }
+        
+            // redirect to the quiz result page
+            return $this->render('quiz/score.html.twig',['quiz' => $quiz,
+            'score' => $score,
+            'answers' => $submittedAnswers
+        ]);
+        }
+
+        // render the quiz page
+        return $this->render('quiz/show.html.twig', [
+            'quiz' => $quiz,
+        ]);
     }
 }
 

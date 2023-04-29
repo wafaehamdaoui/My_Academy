@@ -1,29 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ quiz.title }}{% endblock %}
-{%block header%}
-{%endblock%}
-{% block body %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-8">
-      <h1>{{ quiz.title }}</h1>
-      <h3>{{ quiz.lesson.title }}</h3>
-
-      <h2>Questions</h2>
-      {% if quiz.questions is not empty %}
-      <ul>
-        {% for question in quiz.questions %}
-        <li>{{ question.question }}</li>
-        {% endfor %}
-        
-      </ul>
-      {% else %}
-      <p>No Question yet</p>
-      {% endif %}
-    </div>
-  </div>
-</div>
+{% block title %}Take Quiz - {{ quiz.title }} | ALI_ACADEMY{% endblock %}
+{% block header %}
 {% endblock %}
-{%block footer%}
-{%endblock%}
+{% block body %}
+<section class="take-quiz">
+    <div class="container">
+        <h1 class="text-center text-info" >Take Quiz - {{ quiz.title }}</h1>
+        <form method="post">
+            {% for question in quiz.questions %}
+            <h6>{{ question.question }}</h6>
+            <ul>
+                
+                <li>
+                    <input type="radio" id="option_{{ question.choice1 }}" name="{{ question.id }}" value="{{ question.choice1 }}">
+                    <label for="option_{{ question.choice1 }}">{{ question.choice1 }}</label>
+                </li>
+
+                <li>
+                    <input type="radio" id="option_{{ question.choice2 }}" name="{{ question.id }}" value="{{ question.choice2 }}">
+                    <label for="option_{{ question.choice2 }}">{{ question.choice2 }}</label>
+                </li>
+
+                <li>
+                    <input type="radio" id="option_{{ question.choice3 }}" name="{{ question.id }}" value="{{ question.choice3 }}">
+                    <label for="option_{{ question.choice3 }}">{{ question.choice3 }}</label>
+                </li>
+               
+            </ul>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mb-5">Submit Quiz</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
+{% block footer %}
+{% endblock %}
