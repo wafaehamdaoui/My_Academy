@@ -14,7 +14,7 @@
     {%block header%}
      <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <img src=https://aliacademy.online/wp-content/uploads/2021/09/AliAcademy-logo-final-1.png" alt="logo" width="70" height="40">
+            <img src="https://aliacademy.online/wp-content/uploads/2021/09/AliAcademy-logo-final-1.png" alt="logo" width="70" height="40">
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                   {% block home %}
@@ -29,12 +29,12 @@
                   {% endblock %}
                   {% block about %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="{{ path('about')}}">About</a>
                     </li>
                     {% endblock %}
                     {% block contact %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="{{ path('contact')}}">Contact</a>
                     </li>
                     {% endblock %}
                     {% block login %}
@@ -71,9 +71,9 @@
     <div class="w-full md:w-1/4 text-center md:text-left">
       <h5 class="uppercase mb-6 font-bold">Quick Links</h5>
       <ul class="list-reset mb-4">
-        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="#" class="hover:underline">Courses</a></li>
-        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="#" class="hover:underline">About</a></li>
-        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="#" class="hover:underline">Contact</a></li>
+        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="{{ path('allCourses')}}" class="hover:underline">Courses</a></li>
+        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="{{ path('about')}}" class="hover:underline">About</a></li>
+        <li class="mt-2 inline-block mr-2 md:block md:mr-0"><a href="{{ path('contact')}}" class="hover:underline">Contact</a></li>
       </ul>
     </div>
     <div class="w-full md:w-1/4 text-center md:text-left">
@@ -89,7 +89,7 @@
       <p class="mb-4">Get the latest news and updates from My Platform straight to your inbox.</p>
       <form>
         <div class="flex items-center">
-          <input type="email" class="w-full py-2 px-3 mr-2 bg-gray-800 text-gray-300 focus:outline-none focus:bg-gray-700" placeholder="johndoe@example.com">
+          <input type="email" class="w-full py-2 px-3 mr-2 bg-gray-800 text-gray-300 focus:outline-none focus:bg-gray-700" placeholder="wafae@example.com">
           <button class="bg-white text-gray-900 py-2 px-4 font-bold uppercase hover:bg-gray-100 focus:outline-none">Subscribe</button>
         </div>
       </form>

@@ -6,15 +6,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\CourseRepository;
 use App\Entity\Course;
 use App\Entity\User;
+use App\Entity\Comment;
+use App\Repository\CourseRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
+use App\Repository\CommentRepository;
 use App\Entity\Category;
 use App\Form\CourseType;
 use App\Form\CourseSearchType;
 use App\Form\EnrollType;
+use App\Form\CommentType;
 
 class CourseController extends AbstractController
 {
@@ -189,6 +192,65 @@ class CourseController extends AbstractController
     return $this->render('dashboard.html.twig', [
         'courses' => $recentCourses,
     ]);
+    }
+    // show about page
+    #[Route('/about', name: 'about')]
+    public function about(): Response
+    {
+        return $this->render('about.html.twig');
+    }
+    //show contact page
+    #[Route('/contact', name: 'contact')]
+    public function contact(Request $request,EntityManagerInterface $entityManager,): Response
+    {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash('success', 'the message is sended');
+            return $this->redirectToRoute('home');
+        }
+    return $this->render('contact.html.twig', [
+        'commentForm' => $form->createView(),
+    ]);
+    }
+    // show list of message  from admin
+    #[Route('/comments', name: 'allComments')]
+    public function allMessage(EntityManagerInterface $entityManager,
+    CommentRepository $commentRepository): Response
+    {
+        $comments = $commentRepository->findAll();
+        return $this->render('admin/comments.html.twig',
+        ['comments' => $comments,]);
+    }
+    // delete a comment
+    #[Route('/comment/delete/{id}', name: 'comment_delete')]
+    public function deleteComment($id,EntityManagerInterface $entityManager,
+    CommentRepository $commentRepository): Response
+    {
+        $comment=$commentRepository->find($id);
+        if($comment){
+            $entityManager->remove($comment);
+            $entityManager->flush();
+            $this->addFlash('success', 'Comment is removed by success');
+        }
+        return $this->redirectToRoute('allComments');
+    }
+    // delete a comment
+    #[Route('/comments/deleteAll', name: 'deleteAllComments')]
+    public function deleteAll(EntityManagerInterface $entityManager,
+    CommentRepository $commentRepository): Response
+    {
+        $comments=$commentRepository->findAll();
+        if($comments){
+            foreach ($comments as $comment) {
+                $entityManager->remove($comment);
+                $entityManager->flush();
+            }
+        }
+        return $this->redirectToRoute('allComments');
     }
    
 }

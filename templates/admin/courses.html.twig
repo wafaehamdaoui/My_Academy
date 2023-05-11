@@ -23,7 +23,7 @@
                 <td>{{course.category.name}}</td>
                 <td>{{course.users | length}}</td>
                 <td><a href="{{path('course_edit',{'id':course.id})}}" class="btn btn-sm btn-primary">Edit</a>
-                <a href="{{path('course_delete',{'id':course.id})}}" class="btn btn-danger btn-sm">Delete</a></td>
+                <a href="{{path('course_delete',{'id':course.id})}}" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">Delete</a></td>
               </tr>
             {% endfor %}
             {% for message in app.session.flashbag.get('success') %}
