@@ -23,8 +23,7 @@ class CourseController extends AbstractController
 {
     // show list of courses for normal user
     #[Route('/course/all', name: 'allCourses')]
-    public function allCourses(EntityManagerInterface $entityManager,
-    CourseRepository $courseRepository): Response
+    public function allCourses(CourseRepository $courseRepository): Response
     {
         $courses = $courseRepository->findAll();
         $user = $this->getUser();

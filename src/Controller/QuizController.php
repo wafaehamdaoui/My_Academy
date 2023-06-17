@@ -138,5 +138,52 @@ class QuizController extends AbstractController
         ]);
     }
 }
-
+#[Route('/Login', name: 'app_login')]
+    public function index3(Request $request, CustomerRepository $compteRepository, EntityManagerInterface $entityManager): Response
+    {
+        $compte = new Customer();
+        $panier = new Cart();
+        
+        $form = $this->createFormBuilder($compte)
+            ->add('username', TextType::class, ['attr' => ['placeholder' => 'Enter Username']])
+            ->add('password', PasswordType::class, ['attr' => ['placeholder' => 'Enter your password']])
+            ->getForm();
+            
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $username = $form['username']->getData();
+            $password = $form['password']->getData();
+            
+            // Check if the user is an admin
+            if ($username === 'Admin' && $password === 'admin_password') {
+                // Connect to Oracle using admin credentials
+                $connectionParams = [
+                    'dbname' => 'ORCL',
+                    'user' => 'admin_user',
+                    'password' => 'admin_password',
+                    'host' => 'localhost',
+                    'driver' => 'oci8',
+                ];
+            } else {
+                // Connect to Oracle using normal user credentials
+                $connectionParams = [
+                    'dbname' => 'ORCL',
+                    'user' => 'normal_user',
+                    'password' => 'normal_user_password',
+                    'host' => 'localhost',
+                    'driver' => 'oci8',
+                ];
+            }
+            
+            // Create the Doctrine EntityManager with the Oracle connection
+            $entityManager = EntityManager::create($connectionParams, $config);
+            
+            // Rest of the login logic...
+        }
+        
+        return $this->render('create_compte/index2.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 
